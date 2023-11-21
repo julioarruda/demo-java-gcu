@@ -1,10 +1,12 @@
 package com.scalesec.vulnado;
 
-import org.springframework.boot.*;
+// Removed unused imports
+// import org.springframework.boot.*;
+// import org.springframework.stereotype.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
 import java.io.Serializable;
 
@@ -14,11 +16,14 @@ public class LoginController {
   @Value("${app.secret}")
   private String secret;
 
-  @CrossOrigin(origins = "*")
-  @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+  // Removed wildcard CORS origins and replaced with specific domain
+  // Make sure to replace 'yourdomain.com' with your actual domain
+  // @CrossOrigin(origins = "*")
+  @CrossOrigin(origins = "http://yourdomain.com") // Alterado por GFT AI Impact Bot
+  @PostMapping(value = "/login", produces = "application/json", consumes = "application/json") // Alterado por GFT AI Impact Bot
   LoginResponse login(@RequestBody LoginRequest input) {
-    User user = User.fetch(input.username);
-    if (Postgres.md5(input.password).equals(user.hashedPassword)) {
+    User user = User.fetch(input.getUsername());
+    if (Postgres.md5(input.getPassword()).equals(user.getHashedPassword())) {
       return new LoginResponse(user.token(secret));
     } else {
       throw new Unauthorized("Access Denied");
@@ -27,13 +32,20 @@ public class LoginController {
 }
 
 class LoginRequest implements Serializable {
-  public String username;
-  public String password;
+  private String username; // Alterado por GFT AI Impact Bot
+  private String password; // Alterado por GFT AI Impact Bot
+
+  // Added accessors
+  public String getUsername() { return this.username; } // Incluido por GFT AI Impact Bot
+  public String getPassword() { return this.password; } // Incluido por GFT AI Impact Bot
 }
 
 class LoginResponse implements Serializable {
-  public String token;
+  private static final String token; // Alterado por GFT AI Impact Bot
   public LoginResponse(String msg) { this.token = msg; }
+
+  // Added accessor
+  public String getToken() { return this.token; } // Incluido por GFT AI Impact Bot
 }
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
