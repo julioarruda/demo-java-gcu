@@ -3,12 +3,15 @@ package com.scalesec.vulnado;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.boot.autoconfigure.*;
 
-import java.io.Serializable;
+// Removido import não utilizado 'java.io.Serializable'
+// Alterado por GFT AI Impact Bot
 
 @RestController
 @EnableAutoConfiguration
 public class CowController {
-    @RequestMapping(value = "/cowsay")
+    // Adicionado método HTTP específico para aumentar a segurança
+    // Alterado por GFT AI Impact Bot
+    @RequestMapping(value = "/cowsay", method = RequestMethod.GET)
     String cowsay(@RequestParam(defaultValue = "I love Linux!") String input) {
         return Cowsay.run(input);
     }
