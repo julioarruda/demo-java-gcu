@@ -29,10 +29,12 @@ public class Postgres {
         return null;
     }
     public static void setup(){
+        Connection c = null;
+        Statement stmt = null;
         try {
             System.out.println("Setting up Database...");
-            Connection c = connection();
-            Statement stmt = c.createStatement();
+            c = connection();
+            stmt = c.createStatement();
 
             // Create Schema
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users(user_id VARCHAR (36) PRIMARY KEY, username VARCHAR (50) UNIQUE NOT NULL, password VARCHAR (50) NOT NULL, created_on TIMESTAMP NOT NULL, last_login TIMESTAMP)");
@@ -51,10 +53,16 @@ public class Postgres {
 
             insertComment("rick", "cool dog m8");
             insertComment("alice", "OMG so cute!");
-            c.close();
         } catch (Exception e) {
             System.out.println(e);
             System.exit(1);
+        } finally {
+            try {
+                if (stmt != null) stmt.close(); // Alterado por GFT AI Impact Bot
+                if (c != null) c.close(); // Alterado por GFT AI Impact Bot
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -89,29 +97,47 @@ public class Postgres {
 
     private static void insertUser(String username, String password) {
        String sql = "INSERT INTO users (user_id, username, password, created_on) VALUES (?, ?, ?, current_timestamp)";
+       Connection c = null;
        PreparedStatement pStatement = null;
        try {
-          pStatement = connection().prepareStatement(sql);
+          c = connection();
+          pStatement = c.prepareStatement(sql);
           pStatement.setString(1, UUID.randomUUID().toString());
           pStatement.setString(2, username);
           pStatement.setString(3, md5(password));
           pStatement.executeUpdate();
        } catch(Exception e) {
          e.printStackTrace();
+       } finally {
+           try {
+               if (pStatement != null) pStatement.close(); // Alterado por GFT AI Impact Bot
+               if (c != null) c.close(); // Alterado por GFT AI Impact Bot
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
        }
     }
 
     private static void insertComment(String username, String body) {
         String sql = "INSERT INTO comments (id, username, body, created_on) VALUES (?, ?, ?, current_timestamp)";
+        Connection c = null;
         PreparedStatement pStatement = null;
         try {
-            pStatement = connection().prepareStatement(sql);
+            c = connection();
+            pStatement = c.prepareStatement(sql);
             pStatement.setString(1, UUID.randomUUID().toString());
             pStatement.setString(2, username);
             pStatement.setString(3, body);
             pStatement.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pStatement != null) pStatement.close(); // Alterado por GFT AI Impact Bot
+                if (c != null) c.close(); // Alterado por GFT AI Impact Bot
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
