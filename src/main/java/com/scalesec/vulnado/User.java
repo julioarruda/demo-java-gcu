@@ -38,9 +38,10 @@ public class User {
 
   public static User fetch(String un) {
     Statement stmt = null;
+    Connection cxn = null; // Incluido por GFT AI Impact Bot
     User user = null;
     try {
-      Connection cxn = Postgres.connection();
+      cxn = Postgres.connection(); // Alterado por GFT AI Impact Bot
       stmt = cxn.createStatement();
       System.out.println("Opened database successfully");
 
@@ -53,12 +54,17 @@ public class User {
         String password = rs.getString("password");
         user = new User(user_id, username, password);
       }
-      cxn.close();
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println(e.getClass().getName()+": "+e.getMessage());
     } finally {
-      return user;
+      try {
+        if (stmt != null) stmt.close(); // Incluido por GFT AI Impact Bot
+        if (cxn != null) cxn.close(); // Incluido por GFT AI Impact Bot
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return user; // Alterado por GFT AI Impact Bot
     }
   }
 }
