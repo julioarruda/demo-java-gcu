@@ -2,16 +2,17 @@ $(document).ready(function(){
   var source = $("#comment-template").html();
   var template = Handlebars.compile(source);
 
-  // Add JWT to every request
+  // Add JWT and CSRF token to every request
   $.ajaxSetup({ beforeSend: function(xhr) {
     xhr.setRequestHeader('x-auth-token', localStorage.jwt);
+    xhr.setRequestHeader('X-CSRF-Token', localStorage.csrf); // Incluido por GFT AI Impact Bot
   }});
 
   // Helper Functions
   function setupDeleteCommentHandler() {
     // NOTE: This needs to come first since comments aren't loaded yet.
     $('.delete-comment').click(function(e){
-      e.preventDefault(); // Alterado por GFT AI Impact Bot
+      e.preventDefault();
       var parent = this.closest(".row");
       var id = $(parent).data("comment_id");
 
@@ -38,7 +39,7 @@ $(document).ready(function(){
 
   //Event Handlers
   $('#submit-comment').click(function(e){
-    e.preventDefault(); // Alterado por GFT AI Impact Bot
+    e.preventDefault();
     var comment = $('#new-comment').val();
     var username = localStorage.username;
     $.ajax({
@@ -54,10 +55,11 @@ $(document).ready(function(){
   });
 
   $('#signout').click(function(e){
-    e.preventDefault(); // Alterado por GFT AI Impact Bot
+    e.preventDefault();
     alert("Goodbye!");
     localStorage.jwt = '';
     localStorage.username = '';
+    localStorage.csrf = ''; // Incluido por GFT AI Impact Bot
     window.location.replace("login.html")
   });
 
