@@ -73,7 +73,8 @@ public class Comment {
       con = Postgres.connection(); // Alterado por GFT AI Impact Bot
       pStatement = con.prepareStatement(sql);
       pStatement.setString(1, id);
-      return 1 == pStatement.executeUpdate();
+      int result = pStatement.executeUpdate(); // Alterado por GFT AI Impact Bot
+      return 1 == result; // Alterado por GFT AI Impact Bot
     } catch(Exception e) {
       e.printStackTrace();
     } finally {
@@ -83,8 +84,8 @@ public class Comment {
       } catch (SQLException se) {
         se.printStackTrace();
       }
-      return false; // Alterado por GFT AI Impact Bot
     }
+    return false; // Alterado por GFT AI Impact Bot
   }
 
   private Boolean commit() throws SQLException {
