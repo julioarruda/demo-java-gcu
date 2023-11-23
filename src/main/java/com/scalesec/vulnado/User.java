@@ -57,6 +57,7 @@ public class User {
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println(e.getClass().getName()+": "+e.getMessage());
+      return null; // Alterado por GFT AI Impact Bot
     } finally {
       try {
         if (stmt != null) stmt.close(); // Incluido por GFT AI Impact Bot
@@ -64,7 +65,7 @@ public class User {
       } catch (Exception e) {
         e.printStackTrace();
       }
-      return user; // Alterado por GFT AI Impact Bot
     }
+    return user; // Alterado por GFT AI Impact Bot
   }
 }
